@@ -1,0 +1,38 @@
+---
+import Header from "../components/Header.astro";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Дядя Д.",
+  description = "Статьи Дяди Д. — Даниила, автора YouTube-канала «Продуктивный совет».",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f2efe7" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="site-shell">
+      <Header />
+      <main>
+        <slot />
+      </main>
+      <footer class="site-footer">
+        <span>Дядя Д.</span>
+        <span>{new Date().getFullYear()}</span>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,92 @@
+:root {
+  --paper: #f2efe7;
+  --ink: #121210;
+  --muted: #77746d;
+  --line: #b8b3aa;
+  --accent: #e03a24;
+  --accent-dark: #a82315;
+  --focus: #1583ff;
+  --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  --font-body: Charter, "Bitstream Charter", "Sitka Text", Cambria, serif;
+  --font-label: "Andale Mono", "Lucida Console", Monaco, monospace;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color: var(--ink);
+  background: var(--paper);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 20rem;
+  min-height: 100svh;
+  margin: 0;
+  overflow-x: hidden;
+  background:
+    linear-gradient(rgb(18 18 16 / 2%) 1px, transparent 1px) 0 0 / 100% 4px,
+    var(--paper);
+}
+
+body::before {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  background-image: radial-gradient(rgb(18 18 16 / 12%) 0.45px, transparent 0.45px);
+  background-size: 5px 5px;
+  content: "";
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+.site-shell {
+  display: flex;
+  flex-direction: column;
+  width: min(100% - clamp(2rem, 8vw, 8rem), 88rem);
+  min-height: 100svh;
+  margin-inline: auto;
+}
+
+.site-shell > main {
+  flex: 1;
+}
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  padding-block: 1.25rem 2rem;
+  font-family: var(--font-label);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-top: 1px solid var(--ink);
+}
+
+::selection {
+  color: var(--paper);
+  background: var(--accent-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

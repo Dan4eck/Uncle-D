@@ -1,0 +1,216 @@
+<header class="site-header" data-site-header>
+  <button
+    class="site-title"
+    type="button"
+    aria-controls="about-popover"
+    aria-expanded="false"
+    aria-label="Открыть информацию о Дяде Д."
+  >
+    <img
+      class="site-title__logo"
+      src="/images/uncle-d-logo-transparent.png"
+      alt=""
+      width="1278"
+      height="1230"
+    />
+    <span>Дядя Д.</span>
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="m5 9 7 7 7-7" />
+    </svg>
+  </button>
+
+  <section class="about-popover" id="about-popover" aria-hidden="true">
+    <div class="about-popover__copy">
+      <p class="about-popover__text">
+        Обо мне — Дядя Д. В миру Даниил. Автор YouTube-канала
+        «Продуктивный совет»… Допишу потом что-то.
+      </p>
+    </div>
+  </section>
+</header>
+
+<button
+  class="about-backdrop"
+  type="button"
+  aria-label="Закрыть информацию обо мне"
+  tabindex="-1"
+></button>
+
+<script>
+  const header = document.querySelector<HTMLElement>("[data-site-header]");
+  const trigger = header?.querySelector<HTMLButtonElement>(".site-title");
+  const popover = header?.querySelector<HTMLElement>(".about-popover");
+  const backdrop = document.querySelector<HTMLButtonElement>(".about-backdrop");
+
+  if (header && trigger && popover && backdrop) {
+    const setOpen = (open: boolean) => {
+      header.dataset.open = String(open);
+      popover.setAttribute("aria-hidden", String(!open));
+      trigger.setAttribute("aria-expanded", String(open));
+      trigger.setAttribute(
+        "aria-label",
+        open ? "Закрыть информацию о Дяде Д." : "Открыть информацию о Дяде Д.",
+      );
+      backdrop.tabIndex = open ? 0 : -1;
+      document.documentElement.classList.toggle("about-open", open);
+    };
+
+    trigger.addEventListener("click", () => setOpen(header.dataset.open !== "true"));
+    backdrop.addEventListener("click", () => setOpen(false));
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        trigger.focus();
+      }
+    });
+
+    setOpen(false);
+  }
+</script>
+
+<style>
+  .site-header {
+    position: relative;
+    z-index: 30;
+    display: grid;
+    place-items: center;
+    padding-block: clamp(2.5rem, 7vw, 5rem) clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .site-title {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(0.65rem, 1.5vw, 1rem);
+    padding: 0;
+    color: var(--ink);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .site-title__logo {
+    width: clamp(4.4rem, 8.8vw, 7.425rem);
+    height: clamp(4.4rem, 8.8vw, 7.425rem);
+    object-fit: contain;
+  }
+
+  .site-title span {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    font-weight: 700;
+    line-height: 0.85;
+    letter-spacing: -0.07em;
+  }
+
+  .site-title svg {
+    width: clamp(1.15rem, 2vw, 1.7rem);
+    fill: none;
+    stroke: var(--accent);
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+    stroke-width: 2;
+    transition: transform 420ms var(--ease-out);
+  }
+
+  .site-title:hover svg {
+    transform: translateY(0.3rem);
+  }
+
+  .site-title:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 0.45rem;
+  }
+
+  .site-header[data-open="true"] .site-title svg {
+    transform: rotate(180deg);
+  }
+
+  .about-popover {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    display: block;
+    width: min(36rem, calc(100vw - 2rem));
+    padding: clamp(2rem, 5vw, 3.25rem);
+    color: var(--paper);
+    background: var(--ink);
+    box-shadow: 0 1.4rem 5rem rgb(12 12 11 / 26%);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -1rem) scaleY(0.94);
+    transform-origin: top center;
+    transition: opacity 260ms ease, transform 420ms var(--ease-out), visibility 420ms;
+    visibility: hidden;
+  }
+
+  .site-header[data-open="true"] .about-popover {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0) scaleY(1);
+    visibility: visible;
+  }
+
+  .about-popover__copy {
+    display: grid;
+    place-items: center;
+  }
+
+  .about-popover__text {
+    max-width: 23ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 3vw, 2.35rem);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    text-align: center;
+  }
+
+  .about-backdrop {
+    position: fixed;
+    z-index: 20;
+    inset: 0;
+    visibility: hidden;
+    padding: 0;
+    background: rgb(242 239 231 / 68%);
+    border: 0;
+    opacity: 0;
+    transition: opacity 260ms ease, visibility 260ms;
+  }
+
+  :global(.about-open) .about-backdrop {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  @media (max-width: 600px) {
+    .site-header {
+      padding-block: 2.5rem 2rem;
+    }
+
+    .site-title span {
+      font-size: clamp(3.4rem, 17vw, 4.8rem);
+    }
+
+    .site-title__logo {
+      width: clamp(3.85rem, 17.6vw, 4.95rem);
+      height: clamp(3.85rem, 17.6vw, 4.95rem);
+    }
+
+    .about-popover {
+      padding: 2.25rem 1.5rem;
+    }
+
+    .about-popover__text {
+      font-size: clamp(1.25rem, 6.4vw, 1.65rem);
+    }
+
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-title svg,
+    .about-popover,
+    .about-backdrop {
+      transition-duration: 1ms;
+    }
+  }
+</style>

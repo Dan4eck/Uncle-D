@@ -1,0 +1,119 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  publishedAt: Date;
+  updatedAt?: Date;
+}
+
+const { title, description, publishedAt, updatedAt } = Astro.props;
+const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long", year: "numeric" }).format(date);
+---
+
+<BaseLayout title={`${title} — Дядя Д.`} description={description}>
+  <article class="article">
+    <header class="article__header">
+      <a class="article__back" href="/">← Все статьи</a>
+      <h1>{title}</h1>
+      <div class="article__meta">
+        <time datetime={publishedAt.toISOString()}>{formatDate(publishedAt)}</time>
+        {updatedAt && <span>Обновлено {formatDate(updatedAt)}</span>}
+      </div>
+    </header>
+    <div class="article__content">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .article {
+    padding-block: clamp(3.5rem, 10vw, 8rem);
+  }
+
+  .article__header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(1rem, 2.5vw, 1.75rem);
+    padding-bottom: clamp(2.5rem, 7vw, 5rem);
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .article__back {
+    color: var(--muted);
+    font-family: var(--font-label);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .article__back:hover {
+    color: var(--accent-dark);
+  }
+
+  h1 {
+    max-width: 16ch;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 9vw, 7.5rem);
+    font-weight: 600;
+    line-height: 0.88;
+    letter-spacing: -0.065em;
+  }
+
+  .article__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    color: var(--muted);
+    font-family: var(--font-label);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .article__content {
+    max-width: 46rem;
+    margin: clamp(3rem, 8vw, 6rem) auto 0;
+    font-family: var(--font-body);
+    font-size: clamp(1.08rem, 2vw, 1.25rem);
+    line-height: 1.72;
+  }
+
+  .article__content :global(h2) {
+    margin: 2.8em 0 0.7em;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .article__content :global(a) {
+    color: var(--accent-dark);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+  }
+
+  .article__content :global(blockquote) {
+    margin: 2.5rem 0;
+    padding: 0.25rem 0 0.25rem 1.5rem;
+    font-family: var(--font-display);
+    font-size: 1.45em;
+    line-height: 1.25;
+    border-left: 0.35rem solid var(--accent);
+  }
+
+  .article__content :global(img),
+  .article__content :global(video) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-block: 2.5rem;
+  }
+
+</style>

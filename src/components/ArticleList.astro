@@ -1,0 +1,73 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  articles: CollectionEntry<"articles">[];
+}
+
+const { articles } = Astro.props;
+---
+
+<ol class="article-list">
+  {articles.map((article) => (
+    <li class="article-list__item">
+      <a class="article-list__link" href={`/articles/${article.id}/`}>
+        <span class="article-list__title">{article.data.title}</span>
+      </a>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .article-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .article-list__link {
+    display: block;
+    padding-block: clamp(0.55rem, 1.3vw, 0.9rem);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .article-list__link:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 0.3rem;
+  }
+
+  .article-list__title {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 2vw, 1.375rem);
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    transform-origin: left center;
+  }
+
+  .article-list__link:hover .article-list__title {
+    animation: title-wiggle 320ms ease-in-out;
+  }
+
+  @keyframes title-wiggle {
+    0%, 100% {
+      transform: translateX(0) rotate(0);
+    }
+    28% {
+      transform: translateX(0.16rem) rotate(-0.45deg);
+    }
+    58% {
+      transform: translateX(-0.08rem) rotate(0.35deg);
+    }
+    82% {
+      transform: translateX(0.04rem) rotate(-0.15deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .article-list__link:hover .article-list__title {
+      animation: none;
+    }
+  }
+</style>
