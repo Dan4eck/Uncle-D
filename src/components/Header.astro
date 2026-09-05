@@ -1,48 +1,70 @@
-<header class="site-header" data-site-header>
-  <button
-    class="site-title"
-    type="button"
-    aria-controls="about-popover"
-    aria-expanded="false"
-    aria-label="Открыть информацию о Дяде Д."
-  >
-    <img
-      class="site-title__logo"
-      src="/images/uncle-d-logo-transparent.png"
-      alt=""
-      width="1278"
-      height="1230"
-    />
-    <span>Дядя Д.</span>
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="m5 9 7 7 7-7" />
-    </svg>
-  </button>
+---
+const isHomePage = Astro.url.pathname === "/";
+---
 
-  <section class="about-popover" id="about-popover" aria-hidden="true">
-    <div class="about-popover__copy">
+<header class="site-header" data-site-header={isHomePage ? "" : undefined}>
+  {isHomePage ? (
+    <button
+      class="site-title"
+      type="button"
+      aria-controls="about-popover"
+      aria-expanded="false"
+      aria-label="Открыть информацию о Дяде Д."
+    >
+      <img
+        class="site-title__logo"
+        src="/images/uncle-d-logo-transparent.png"
+        alt=""
+        width="1278"
+        height="1230"
+      />
+      <span>Дядя Д.</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m5 9 7 7 7-7" />
+      </svg>
+    </button>
+  ) : (
+    <a class="site-title" href="/" aria-label="Вернуться ко всем статьям">
+      <img
+        class="site-title__logo"
+        src="/images/uncle-d-logo-transparent.png"
+        alt=""
+        width="1278"
+        height="1230"
+      />
+      <span>Дядя Д.</span>
+    </a>
+  )}
+
+  {isHomePage && (
+    <section class="about-popover" id="about-popover" aria-hidden="true">
       <p class="about-popover__text">
-        Обо мне — Дядя Д. В миру Даниил. Автор YouTube-канала
-        «Продуктивный совет»… Допишу потом что-то.
+        Дядя Д. В миру Даниил. Автор YouTube-канала «Продуктивный совет».
+        Этот сайт - одиночный пикет против цифрового слопа: мои мысли, опыт и жизнь в тексте.
+        Ни единого токена LLM не было потрачено при написании статей. Ни единой строчки кода
+        не было написано мной при создании сайта. 
       </p>
-    </div>
-  </section>
+    </section>
+  )}
 </header>
 
-<button
-  class="about-backdrop"
-  type="button"
-  aria-label="Закрыть информацию обо мне"
-  tabindex="-1"
-></button>
+{isHomePage && (
+  <button
+    class="about-backdrop"
+    type="button"
+    aria-label="Закрыть информацию обо мне"
+    tabindex="-1"
+  ></button>
+)}
 
-<script>
-  const header = document.querySelector<HTMLElement>("[data-site-header]");
-  const trigger = header?.querySelector<HTMLButtonElement>(".site-title");
-  const popover = header?.querySelector<HTMLElement>(".about-popover");
-  const backdrop = document.querySelector<HTMLButtonElement>(".about-backdrop");
+{isHomePage && (
+  <script>
+    const header = document.querySelector<HTMLElement>("[data-site-header]");
+    const trigger = header?.querySelector<HTMLButtonElement>(".site-title");
+    const popover = header?.querySelector<HTMLElement>(".about-popover");
+    const backdrop = document.querySelector<HTMLButtonElement>(".about-backdrop");
 
-  if (header && trigger && popover && backdrop) {
+    if (header && trigger && popover && backdrop) {
     const setOpen = (open: boolean) => {
       header.dataset.open = String(open);
       popover.setAttribute("aria-hidden", String(!open));
@@ -65,8 +87,9 @@
     });
 
     setOpen(false);
-  }
-</script>
+    }
+  </script>
+)}
 
 <style>
   .site-header {
@@ -86,6 +109,7 @@
     background: transparent;
     border: 0;
     cursor: pointer;
+    text-decoration: none;
   }
 
   .site-title__logo {
@@ -130,11 +154,12 @@
     top: 100%;
     left: 50%;
     display: block;
-    width: min(36rem, calc(100vw - 2rem));
-    padding: clamp(2rem, 5vw, 3.25rem);
-    color: var(--paper);
-    background: var(--ink);
-    box-shadow: 0 1.4rem 5rem rgb(12 12 11 / 26%);
+    width: min(28rem, calc(100vw - 2rem));
+    padding: clamp(1.1rem, 3vw, 1.5rem);
+    color: var(--ink);
+    background: #fffef9;
+    border: 2px solid var(--ink);
+    box-shadow: 0.42rem 0.42rem 0 var(--accent);
     opacity: 0;
     pointer-events: none;
     transform: translate(-50%, -1rem) scaleY(0.94);
@@ -150,19 +175,25 @@
     visibility: visible;
   }
 
-  .about-popover__copy {
-    display: grid;
-    place-items: center;
+  .about-popover::before {
+    position: absolute;
+    top: 0.45rem;
+    right: 0.45rem;
+    bottom: 0.45rem;
+    left: 0.45rem;
+    border: 1px solid var(--line);
+    content: "";
+    pointer-events: none;
   }
 
   .about-popover__text {
-    max-width: 23ch;
+    position: relative;
+    max-width: 46ch;
     margin: 0;
-    font-family: var(--font-display);
-    font-size: clamp(1.4rem, 3vw, 2.35rem);
-    line-height: 1.08;
-    letter-spacing: -0.035em;
-    text-align: center;
+    font-family: var(--font-body);
+    font-size: clamp(0.78rem, 1.5vw, 1.05rem);
+    line-height: 1.38;
+    letter-spacing: -0.012em;
   }
 
   .about-backdrop {
@@ -171,7 +202,7 @@
     inset: 0;
     visibility: hidden;
     padding: 0;
-    background: rgb(242 239 231 / 68%);
+    background: rgb(242 239 231 / 52%);
     border: 0;
     opacity: 0;
     transition: opacity 260ms ease, visibility 260ms;
@@ -197,11 +228,11 @@
     }
 
     .about-popover {
-      padding: 2.25rem 1.5rem;
+      padding: 1.1rem;
     }
 
     .about-popover__text {
-      font-size: clamp(1.25rem, 6.4vw, 1.65rem);
+      font-size: 0.8rem;
     }
 
   }
