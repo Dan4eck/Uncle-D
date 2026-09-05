@@ -1,0 +1,24 @@
+{
+  "name": "Дядя Д.",
+  "short_name": "Дядя Д.",
+  "description": "Статьи Дяди Д. — Даниила, автора YouTube-канала «Продуктивный совет».",
+  "lang": "ru",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f2efe7",
+  "theme_color": "#f2efe7",
+  "icons": [
+    {
+      "src": "/site-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/site-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
