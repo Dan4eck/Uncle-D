@@ -12,7 +12,7 @@ const {
   description = "Сайт дяди д. Одиночный пикет против цифрового слопа. Мысли, опыт, жизнь в тексте.",
 } = Astro.props;
 
-const publicSiteUrl = "https://uncle-d-production.up.railway.app";
+const publicSiteUrl = "https://www.uncle-d.ru";
 const shareUrl = new URL(Astro.url.pathname, publicSiteUrl).href;
 const shareImageUrl = `${publicSiteUrl}/social-preview.png`;
 ---
@@ -28,6 +28,7 @@ const shareImageUrl = `${publicSiteUrl}/social-preview.png`;
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href={shareUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ru_RU" />
     <meta property="og:site_name" content="Дядя Д." />
